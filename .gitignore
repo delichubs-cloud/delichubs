@@ -12,6 +12,8 @@
 # next.js
 /.next/
 /out/
+.next.bak.*
+.playwright-cli/
 
 # production
 /build
