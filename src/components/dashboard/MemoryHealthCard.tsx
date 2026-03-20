@@ -1,0 +1,58 @@
+import type { MemoryData } from "@/types";
+
+interface MemoryHealthCardProps {
+  data: MemoryData;
+}
+
+export default function MemoryHealthCard({ data }: MemoryHealthCardProps) {
+  return (
+    <div className="bg-gray-900 rounded-lg p-5 sm:p-6 border border-gray-800">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <h2 className="text-lg sm:text-xl font-bold">🧠 Memory System</h2>
+        <span className="text-xs px-2 py-1 bg-green-900 text-green-400 rounded">
+          Healthy
+        </span>
+      </div>
+
+      <div className="mb-6">
+        <p className="text-sm text-gray-400 mb-3">📚 Knowledge Graph</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <p className="text-2xl font-bold">{data.totalFacts}</p>
+            <p className="text-xs text-gray-500">Total Facts</p>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between gap-3 text-sm">
+              <span>🔥 Hot (7d)</span>
+              <span className="text-orange-400">{data.hotFacts}</span>
+            </div>
+            <div className="flex justify-between gap-3 text-sm">
+              <span>🌡️ Warm (8-30d)</span>
+              <span className="text-yellow-400">{data.warmFacts}</span>
+            </div>
+            <div className="flex justify-between gap-3 text-sm">
+              <span>❄️ Cold (30+)</span>
+              <span className="text-blue-400">{data.coldFacts}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <p className="text-sm text-gray-400 mb-2">📝 Daily Notes</p>
+        <p className="text-lg">
+          <span className="font-bold">{data.dailyNotes}</span>
+          <span className="text-gray-500 text-sm ml-2">days</span>
+        </p>
+      </div>
+
+      <div className="p-3 bg-gray-800 rounded">
+        <p className="text-sm text-gray-400 mb-1">🔄 Nightly Extraction</p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
+          <span>Last run: {data.lastExtraction}</span>
+          <span className="text-green-400">+{data.extractedFacts} facts</span>
+        </div>
+      </div>
+    </div>
+  );
+}
