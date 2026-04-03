@@ -1,16 +1,56 @@
-import type { ApprovalData, ApprovalType } from "@/types";
+'use client';
 
-interface ApprovalQueueCardProps {
-  data: ApprovalData;
-}
+import { useEffect, useState } from 'react';
+import { getApprovalData } from '@/lib/dashboard-data';
 
-const iconMap: Record<ApprovalType, string> = {
-  email: "📧",
-  social: "📱",
-  payment: "💰",
-};
+export default function ApprovalQueueCard() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default function ApprovalQueueCard({ data }: ApprovalQueueCardProps) {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const approvalData = await getApprovalData();
+        setData(approvalData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load data');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-gray-900 rounded-lg p-5 sm:p-6 border border-gray-800">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-700 rounded w-1/3 mb-4"></div>
+          <div className="space-y-3">
+            <div className="h-4 bg-gray-700 rounded"></div>
+            <div className="h-4 bg-gray-700 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="bg-gray-900 rounded-lg p-5 sm:p-6 border border-red-800">
+        <p className="text-red-400">Error: {error}</p>
+      </div>
+    );
+  }
+
+  const iconMap: Record<string, string> = {
+    email: '📧',
+    social: '📱',
+    payment: '💰'
+  };
+
   return (
     <div className="bg-gray-900 rounded-lg p-5 sm:p-6 border border-gray-800">
       <div className="flex items-center justify-between gap-3 mb-4">
@@ -21,7 +61,7 @@ export default function ApprovalQueueCard({ data }: ApprovalQueueCardProps) {
       </div>
 
       <div className="space-y-3">
-        {data.items.map((item) => (
+        {data.items.map((item: any) => (
           <div
             key={item.id}
             className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 bg-gray-800 rounded hover:bg-gray-700 transition"
@@ -51,6 +91,10 @@ export default function ApprovalQueueCard({ data }: ApprovalQueueCardProps) {
       {data.items.length === 0 ? (
         <p className="text-center text-gray-500 py-8">All tasks cleared.</p>
       ) : null}
+
+      <div className="mt-4 pt-4 border-t border-gray-700 text-xs text-gray-500">
+        Data from activity_logs • Updated daily
+      </div>
     </div>
   );
 }

@@ -1,11 +1,15 @@
-import ApprovalQueueCard from "@/components/dashboard/ApprovalQueueCard";
-import MemoryHealthCard from "@/components/dashboard/MemoryHealthCard";
-import ProjectStatusCard from "@/components/dashboard/ProjectStatusCard";
+import AgentSkillCard from "@/components/dashboard/AgentSkillCard";
+import TimeBankCard from "@/components/dashboard/TimeBankCard";
+import WeeklyDigestCard from "@/components/dashboard/WeeklyDigestCard";
+import ActivityTerminalCard from "@/components/dashboard/ActivityTerminalCard";
+import StatsOverview from "@/components/dashboard/StatsOverview";
+
+// 所有组件现在都使用真实数据
 import RevenueCard from "@/components/dashboard/RevenueCard";
 import TokenUsageCard from "@/components/dashboard/TokenUsageCard";
+import ProjectStatusCard from "@/components/dashboard/ProjectStatusCard";
+import ApprovalQueueCard from "@/components/dashboard/ApprovalQueueCard";
 import UserStatsCard from "@/components/dashboard/UserStatsCard";
-import StatCard from "@/components/ui/StatCard";
-import { dashboardData } from "@/lib/mockData";
 
 export default function Home() {
   return (
@@ -16,55 +20,52 @@ export default function Home() {
             🏠 DelicHubs Dashboard
           </h1>
           <p className="text-sm sm:text-base text-gray-400">
-            Transparent AI Operations • Last updated:{" "}
-            {new Date(dashboardData.lastUpdated).toLocaleString("zh-TW", {
-              timeZone: "Asia/Hong_Kong",
-            })}
+            Transparent AI Operations • Powered by Supabase •{' '}
+            <span className="text-green-400">✅ All Real Data</span>
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            icon="💰"
-            title="Total Revenue"
-            value={`$${dashboardData.revenue.total.toLocaleString()}`}
-            change={`+${dashboardData.revenue.growth}% vs last month`}
-            color="green"
-          />
-          <StatCard
-            icon="🎯"
-            title="Token Usage"
-            value={dashboardData.tokens.monthTotal}
-            change={`${dashboardData.tokens.today} today`}
-            color="blue"
-          />
-          <StatCard
-            icon="👥"
-            title="Total Users"
-            value={dashboardData.users.total.toLocaleString()}
-            change={`${dashboardData.users.paid} paid`}
-            color="purple"
-          />
-          <StatCard
-            icon="⏰"
-            title="Active Days"
-            value={dashboardData.memory.dailyNotes}
-            change="tracking days"
-            color="yellow"
-          />
+        {/* 顶部统计卡片（真实数据） */}
+        <StatsOverview />
+
+        {/* 新组件：核心功能 */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xs px-2 py-1 bg-green-900 text-green-400 rounded">
+              🟢 Core Features (Real Data)
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ActivityTerminalCard />
+            <AgentSkillCard />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <TimeBankCard />
+            <WeeklyDigestCard />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <RevenueCard data={dashboardData.revenue} />
-          <TokenUsageCard data={dashboardData.tokens} />
-          <ProjectStatusCard data={dashboardData.projects} />
-          <MemoryHealthCard data={dashboardData.memory} />
-          <ApprovalQueueCard data={dashboardData.approvals} />
-          <UserStatsCard data={dashboardData.users} />
+        {/* 原有组件：全部使用真实数据 */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xs px-2 py-1 bg-blue-900 text-blue-400 rounded">
+              🔵 Extended Metrics (Real Data)
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RevenueCard />
+            <TokenUsageCard />
+            <ProjectStatusCard />
+            <ApprovalQueueCard />
+            <UserStatsCard />
+          </div>
         </div>
 
         <div className="mt-12 text-center text-gray-500 text-sm">
-          <p>Powered by OpenClaw • Built with Next.js</p>
+          <p>Powered by OpenClaw • Built with Next.js + Supabase</p>
           <p className="mt-2">
             <a
               href="https://github.com/delichubs-cloud/delichubs"
@@ -72,6 +73,9 @@ export default function Home() {
             >
               View Source on GitHub
             </a>
+          </p>
+          <p className="mt-2 text-xs text-gray-600">
+            Last updated: {new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Hong_Kong' })}
           </p>
         </div>
       </div>
